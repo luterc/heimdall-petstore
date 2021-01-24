@@ -1,0 +1,56 @@
+server:
+  port: 10000
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://1.1.1.1:0000/heimdall_petstore_db?autoReconnect=true&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&serverTimezone=CTT
+    username: foo
+    password: bar
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      auto-commit: true
+      idle-timeout: 60000
+      pool-name: HeimdallDataPool
+      max-lifetime: 1800000
+      connection-timeout: 60000
+      connection-test-query: SELECT 1
+  #jpa配置
+  jpa:
+    #注册:OpenEntityManagerInViewInterceptor,view层也会打开事务，也就是可以获取到hibernate session
+    open-in-view: true
+    #数据库平台和方言配置
+    database: mysql #mysql
+    properties:
+      hibernate:
+        #支持无事务情况下的懒加载
+        enable_lazy_load_no_trans: false
+        #        context
+        current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
+        #显示执行汇总信息
+        generate_statistics: false
+        #        输出所有SQL语句到控制台
+        show_sql: false
+        #        在log和console中打印出更格式化的SQL
+        format_sql: false
+        #        在SQL中生成有助于调试的注释信息
+        use_sql_comments: false
+        #        强制Hibernate按照被更新数据的主键，为SQL更新排序
+        order_updates: true
+    hibernate:
+      # create, create-drop, update, validate
+      # 作用主要用于：自动创建、更新、验证数据库表结构
+      ddl-auto: update
+logging:
+  pattern:
+    console: '%boldWhite(%d) | %green([%t]) | [%highlight(%p)] %highlight(%c{1.}.%M\(%L\)): %highlight(%msg%n)'
+    file: '%d [%t] %p %c{1.}.%M\(%L\)  %m%n'
+  file:
+    name: logs/heimdall-petstore.log
+  level:
+    root: info
+knife4j:
+  enable: true
+  production: false
+
